@@ -1,6 +1,7 @@
 require 'bundler/setup'
 Bundler.require(:default)
 require 'yaml'
+require 'ostruct'
 
 Config = YAML.load_file('config.yml')
 
