@@ -1,0 +1,7 @@
+company: pludoni GmbH
+uptimerobot_api_key: 'u275....'
+logLimit: 5
+customRatios:
+  - 7
+  - 30
+  - 365

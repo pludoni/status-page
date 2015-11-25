@@ -1,0 +1,48 @@
+doctype html
+html lang='de'
+  head
+    meta charset="utf-8"
+    title #{config['company']} Status
+    link href='materialize.min.css' rel='stylesheet'
+    link rel="icon" type="image/png" href="images/pludoni.png"
+
+  body
+    .green.lighten-4 style='padding: 50px; margin-bottom: 20px'
+      .container.center
+        h2
+          |Status
+          br
+          small aller #{config['company']} Services
+    .container
+
+        ul.collection
+          - checks.each do |check|
+            li.collection-item.avatar
+              img src="images/#{check.image}" alt="" class="circle"
+              span.title
+                a href=(check.url)
+                  = check.friendlyname
+              p
+                .chip = check.status_name
+                - check.log.each do |log|
+                  div style='font-size: 80%'
+                    span> style='color: #999'
+                     = date_format(log['datetime'])
+                      | :
+                    span = type_name(log['type'])
+
+
+              .secondary-content
+                - check.uptimes.each do |text,uptime|
+                  div
+                    .chip class=label_class_for_uptime(uptime)
+                      = uptime + "%"
+                    small< = text
+
+
+    footer.light-blue.lighten-4 style="margin-top: 50px; padding: 50px; color: #666;"
+      .container.text-muted
+        p Quelle: uptimerobot.com
+        | Erstellt am: #{Time.now.to_s}
+        br
+        | Copyright &copy; #{Date.today.year} pludoni GmbH
