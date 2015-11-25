@@ -7,7 +7,7 @@ This is a simple generation script that fetches uptime information from a Uptime
 This script is intended to run every 5 min., e.g. crontab (copy the css and images over before):
 
 ```
-*/5 * * * * cd /home/app/status-page/ && /home/app/.rvm/rubies/ruby-1.9.3-p545/bin/ruby generate.rb > /var/www/status.pludoni.de/web/index.html
+*/5 * * * * /bin/bash -l -c 'cd ~/status-page && ruby generate.rb /var/www/status.pludoni.de/web/index.html'
 ```
 
 
