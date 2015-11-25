@@ -82,4 +82,11 @@ end
 scope = ViewObject.new
 scope.checks = list.sort_by{|i| [i.sort_group, i.friendlyname.downcase ] }
 
-puts Slim::Template.new("template.slim", {}).render(scope)
+tpl = Slim::Template.new("template.slim", {}).render(scope)
+if ARGV[0]
+  File.open(ARGV[0], "w+") {|f|
+    f.write tpl
+  }
+else
+  puts tpl
+end
