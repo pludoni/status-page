@@ -32,7 +32,7 @@ class MonitorCheck < OpenStruct
     ).map(&:reverse)
     filtered = ratios.drop_while {|item| item[1] == '100' }
     if filtered.length > 0
-      filterered
+      filtered
     else
       [ ratios.last ]
     end
