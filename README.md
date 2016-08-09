@@ -32,7 +32,7 @@ cp config.yml.example config.yml
 vim config.yml
 ```
 
-### 4. Copy over CSS and Images:
+### 5. Copy over CSS and Images:
 
 ```
 cp -r materialize.min.css images/ /var/www/status.HOST/htdocs
@@ -40,13 +40,13 @@ cp -r materialize.min.css images/ /var/www/status.HOST/htdocs
 
 Bonus points: replace the host images in /images with your own hosts (Name of the file is hostname without top level domain and www)
 
-### 5. Run to make sure it works:
+### 6. Run to make sure it works:
 
 ```
 ruby generate.rb /var/www/status.HOST/htdocs/index.html
 ```
 
-### 5. Add Crontab
+### 7. Add Crontab
 
 ```
 */5 * * * * /bin/bash -l -c 'cd ~/status-page && ruby generate.rb /var/www/status.HOST/htdocs/index.html'
