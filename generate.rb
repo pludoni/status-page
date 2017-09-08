@@ -1,21 +1,22 @@
 require 'bundler/setup'
 Bundler.require(:default)
 require 'yaml'
+require 'pry'
 require 'ostruct'
 
 Config = YAML.load_file('config.yml')
 
 class MonitorCheck < OpenStruct
   def image
-    friendlyname.downcase.sub('.de','').gsub(' ','-') + ".png"
+    friendly_name.downcase.sub('.de','').gsub(' ','-') + ".png"
   end
 
   def sort_group
-    friendlyname[/^(IT|OFFICE|MINT|SANO)/] ? 1 : 0
+    friendly_name[/^(IT|OFFICE|MINT|SANO)/] ? 1 : 0
   end
 
   def days_monitoring
-    entry = log.find{|i| i['type'] == '98' }
+    entry = logs.find{|i| i['type'] == '98' }
     if entry
       (Date.today - Chronic.parse(entry['datetime']).to_date).ceil
     else
@@ -25,7 +26,7 @@ class MonitorCheck < OpenStruct
 
   def uptimes
     max = days_monitoring
-    ratios = customuptimeratio.split('-').zip(
+    ratios = custom_uptime_ratios.split('-').zip(
       Config['customRatios'].map{|ratio|
         "letzte #{[ratio, max].min} Tage"
       }
@@ -48,13 +49,13 @@ class MonitorCheck < OpenStruct
   end
 end
 
-client = UptimeRobot::Client.new(apiKey: Config['uptimerobot_api_key'])
+client = UptimeRobot::Client.new(api_key: Config['uptimerobot_api_key'])
 opts = {
-  customUptimeRatio: Config['customRatios'].join('-'),
+  custom_uptime_ratios: Config['customRatios'].join('-'),
   logs: '1',
-  logsLimit: Config['logLimit']
+  logs_limit: Config['logLimit']
 }
-list = client.getMonitors(opts)['monitors']['monitor'].map{|i| MonitorCheck.new(i) }
+list = client.getMonitors(opts)['monitors'].map{|i| MonitorCheck.new(i) }
 
 
 
@@ -77,11 +78,11 @@ class ViewObject < OpenStruct
   end
 
   def date_format(df)
-    Chronic.parse(df).strftime('%d.%m.%Y %H:%M Uhr')
+    Time.at(df).strftime('%d.%m.%Y %H:%M Uhr')
   end
 end
 scope = ViewObject.new
-scope.checks = list.sort_by{|i| [i.sort_group, i.friendlyname.downcase ] }
+scope.checks = list.sort_by{|i| [i.sort_group, i.friendly_name.downcase ] }
 
 tpl = Slim::Template.new("template.slim", {}).render(scope)
 if ARGV[0]

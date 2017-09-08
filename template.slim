@@ -21,10 +21,10 @@ html lang='de'
               img src="images/#{check.image}" alt="" class="circle"
               span.title
                 a href=(check.url)
-                  = check.friendlyname
+                  = check.friendly_name
               p
                 .chip = check.status_name
-                - check.log.each do |log|
+                - check.logs.each do |log|
                   div style='font-size: 80%'
                     span> style='color: #999'
                      = date_format(log['datetime'])
