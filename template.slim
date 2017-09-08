@@ -33,6 +33,11 @@ html lang='de'
 
 
               .secondary-content
+                div
+                  small.chip
+                    = check.avg_response_time
+                    |s
+                  small< Avg. time
                 - check.uptimes.each do |text,uptime|
                   div
                     .chip class=label_class_for_uptime(uptime)
