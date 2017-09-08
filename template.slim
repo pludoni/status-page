@@ -41,7 +41,7 @@ html lang='de'
                 - check.uptimes.each do |text,uptime|
                   div
                     .chip class=label_class_for_uptime(uptime)
-                      = uptime + "%"
+                      = (uptime.to_f.round(2)) + "%"
                     small< = text
 
 
